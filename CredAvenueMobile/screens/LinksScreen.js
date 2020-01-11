@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Dimensions, View, AsyncStorage } from 'react-native';
+import { StyleSheet, Dimensions, View, AsyncStorage,Image } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import _get from 'lodash/get';
 import humps from 'humps'
 import LiveScreen from './LiveScreen'
-
  
 const SecondRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
 );
+
 export default function LinksScreen() {
   const [index, setindex] = useState(0);
 
@@ -47,10 +47,10 @@ export default function LinksScreen() {
     
   }, [authData, index]);
 const FirstRoute = () => (
-  <LiveScreen transList={transList} />
+  <LiveScreen transList={transList}/>
 );
   return (
-    <TabView
+    <TabView 
         navigationState={{index, routes}}
         renderScene={SceneMap({
           new: FirstRoute,
@@ -65,7 +65,27 @@ const FirstRoute = () => (
 }
 
 LinksScreen.navigationOptions = {
-  title: 'Transactions',
+  headerBackground: (
+    <Image
+      style={{
+        width: '45%',
+        height: 80,
+        resizeMode: 'contain',
+        marginTop: 3,
+        marginLeft: 10,
+        marginTop: -10,
+      }}
+      source={require('../assets/images/cred-logo-primary.png')}
+    />
+  ),
+  headerStyle: {
+    // backgroundColor: '#7ae88c'
+    backgroundColor:'#fff' 
+  },
+  headerTitleStyle: {
+    color: '#fff',
+    fontWeight:500,
+  },
 };
 
 const styles = StyleSheet.create({
@@ -73,5 +93,5 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 15,
     backgroundColor: '#fff',
-  },
+  }, 
 });
