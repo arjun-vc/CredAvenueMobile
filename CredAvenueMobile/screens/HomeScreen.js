@@ -25,7 +25,7 @@ const HomeScreen = (props)=> {
   const [authData, setAuthData] = useState({});
   useEffect(async () => {
     const data = await AsyncStorage.getItem('userToken');
-    setAuthData(JSON.parse(data));
+    setAuthData(data ? JSON.parse(data) : {});
   }, []);
 
   useEffect(() => {
@@ -53,21 +53,27 @@ const HomeScreen = (props)=> {
         <View style={styles.container}>
           <div>
             <View style={styles.invHead}>
-            <h3>My summary</h3>
+            <Text style={{color:'#fff',fontSize:'17px',fontWeight:'600',marginBottom:'15px'}}>My summary</Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-        <View style={[{flex: 1,height: 100, backgroundColor: 'powderblue', }, styles.li]} ><Text>{humanizeNumber(data.amountInvested)}</Text>
-                            <Text>My Investment</Text></View>
-        <View style={[{flex: 1,height: 100, backgroundColor: 'skyblue'}, styles.li]} ><Text>{data.myDeals}</Text>
-                            <Text>My Deals</Text></View>
-      </View>
+              <View style={[{flex: 1,alignItems:'center',justifyContent:'center',height: 100, backgroundColor: '#fff',borderRadius: '10px', marginBottom:'5px',marginLeft:'0px',marginRight:'5px',boxShadow:'inset 0px 0px 11px -3px #999'}, styles.li]} >
+                      <Text style={{color:'#ffa602',fontSize:'18px',fontWeight:'600',textTransform:'uppercase'}}>{humanizeNumber(data.amountInvested)}</Text>
+                      <Text style={{color:'rgba(123, 130, 149,0.7)',fontWeight:'500'}}>My Investment</Text>
+              </View>
+              <View style={[{flex: 1,alignItems:'center',justifyContent:'center',height: 100, backgroundColor: '#fff',borderRadius: '10px', marginBottom:'5px',marginRight:'0px',marginLeft:'5px',boxShadow:'inset 0px 0px 11px -3px #999'}, styles.li]} >
+                      <Text style={{color:'#ffa602',fontSize:'18px',fontWeight:'600',textTransform:'uppercase'}}>{data.myDeals}</Text>
+                      <Text style={{color:'rgba(123, 130, 149,0.7)',fontWeight:'500'}}>My Deals</Text>
+              </View>
+            </View>
       <View style={{flex: 1, flexDirection: 'row'}}>
-        <View style={[{flex: 1,height: 100, backgroundColor: 'skyblue', }, styles.li]} ><Text>{humanizeNumber(data.amountOs)}</Text>
-                            <Text>My Outstanding</Text></View>
-        <View style={[{flex: 1,height: 100, backgroundColor: 'powderblue'}, styles.li]} ><Text>
+        <View style={[{flex: 1,alignItems:'center',justifyContent:'center',height: 100,  backgroundColor: '#fff',borderRadius: '10px', marginTop:'5px',marginLeft:'0px',marginRight:'5px',boxShadow:'inset 0px 0px 11px -3px #999' }, styles.li]} >
+                            <Text  style={{color:'#ffa602',fontSize:'18px',fontWeight:'600',textTransform:'uppercase'}}>{humanizeNumber(data.amountOs)}</Text>
+                            <Text  style={{color:'rgba(123, 130, 149,0.7)',fontWeight:'500'}}>My Outstanding</Text></View>
+        <View style={[{flex: 1,alignItems:'center',justifyContent:'center',height: 100,  backgroundColor: '#fff',borderRadius: '10px', marginTop:'5px',marginRight:'0px',marginLeft:'5px',boxShadow:'inset 0px 0px 11px -3px #999'}, styles.li]} >
+                            <Text  style={{color:'#ffa602',fontSize:'18px',fontWeight:'600',textTransform:'uppercase'}}>
                                 {parseFloat(data.blendedYield).toFixed(2)} <span>%</span>
                             </Text>
-                            <Text>Blended Yield</Text></View>
+                            <Text  style={{color:'rgba(123, 130, 149,0.7)',fontWeight:'500'}}>Blended Yield</Text></View>
       </View>
 
                         </div>
@@ -87,12 +93,12 @@ HomeScreen.navigationOptions = ({ navigation }) => {return {
         marginLeft: 10,
         marginTop: -10,
       }}
-      source={require('../assets/images/cred-logo-darkbg.png')}
+      source={require('../assets/images/cred-logo-primary.png')}
     />
   ),
   headerStyle: {
     // backgroundColor: '#7ae88c'
-    backgroundImage: 'linear-gradient(to right, #80ec88 , #5fd4a3)'
+    backgroundColor:'#fff' 
   },
   headerTitleStyle: {
     color: '#fff',
@@ -111,13 +117,14 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor:'#5478de',
-    minHeight:'calc(100vh - 64px)'
+    minHeight:'calc(100vh - 64px)',
+    padding:'15px',
     // flex: 1,
     // alignItems: 'center',
     // justifyContent: 'center',
   },
   logoutButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#ffa602',
     marginRight: 10,
     paddingTop:5, 
     paddingRight:12,

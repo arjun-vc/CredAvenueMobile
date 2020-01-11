@@ -5,10 +5,12 @@ import _get from 'lodash/get';
 const TransScreen = ({transList = []}) => {
     const renderItem = ({ index, item }) => {
         return (
-          <View style={{ height: 'auto' }}>
-            <Text style={{ textAlign: 'center', marginBottom: 10 }}>{_get(item, 'clientName')}</Text>
-            <Text style={{ textAlign: 'center', color: 'skyblue' }}>{_get(item, 'dealName')}</Text>
-            <Text style={{ textAlign: 'center', color: 'red' }}>{_get(item, 'transactionType')}</Text>
+          <View style={{ height: 'auto',backgroundColor:'#fff',boxShadow:'rgb(153, 153, 153) 0px 0px 11px -3px inset',marginBottom:'10px',padding:'10px',borderRadius:'3px'}}>
+            <Text style={{ color:'#ffa602',fontSize:'14px',fontWeight:'600',textTransform:'uppercase', marginBottom: 5 }}>{_get(item, 'clientName')}</Text>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <Text style={{ color:'rgba(123, 130, 149,0.7)',fontWeight:'500'}}>{_get(item, 'dealName')}</Text>
+              <Text style={{ color: '#a8adbc',borderRadius:'3px',lineHeight:'12px',marginLeft:'auto',backgroundColor:'#f1f5f9',paddingTop:'3px',fontSize:'12px',paddingRight:'5px',paddingBottom:'3px',paddingLeft:'5px'}}>{_get(item, 'transactionType')}</Text>
+            </View>
           </View>
         );
       };
@@ -31,7 +33,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#5478de',
   },
 });
 

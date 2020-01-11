@@ -24,12 +24,11 @@ export default class SignInScreen extends React.Component {
             marginLeft: 10,
             marginTop: -10,
           }}
-          source={require('../assets/images/cred-logo-darkbg.png')}
+          source={require('../assets/images/cred-logo-primary.png')}
         />
       ),
       headerStyle: {
-        // backgroundColor: '#7ae88c'
-        backgroundImage: 'linear-gradient(to right, #80ec88 , #5fd4a3)'
+        backgroundColor: '#fff'
       },
       headerTitleStyle: {
         color: '#fff',
