@@ -1,15 +1,27 @@
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import React, { useState } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Platform, StatusBar, StyleSheet, View, AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import AppNavigator from './navigation/AppNavigator';
 
 export default function App(props){
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
+  useEffect(() => {
+    async function fetchData() {
+    const data = await AsyncStorage.getItem('userToken');
+    const authData = data ? JSON.parse(data) : {};
+    const groupHeader = {};
+    groupHeader['Current-Entity-Id'] = authData.enity_id;
+    groupHeader['Current-User-Id'] = authData.id;
+    groupHeader['Current-Group'] = 'investor';
+    
+    localStorage.setItem('header', JSON.stringify(groupHeader));
+  }
+  fetchData();
+  }, []);
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
       <AppLoading

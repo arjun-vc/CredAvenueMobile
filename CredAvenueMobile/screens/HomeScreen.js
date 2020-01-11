@@ -22,19 +22,9 @@ export const humanizeNumber = (value) => {
 };
 
 const HomeScreen = (props)=> {
-  const [authData, setAuthData] = useState({});
-  useEffect(async () => {
-    const data = await AsyncStorage.getItem('userToken');
-    setAuthData(data ? JSON.parse(data) : {});
-  }, []);
 
   useEffect(() => {
-    const groupHeader = {};
-    groupHeader['Current-Entity-Id'] = authData.entity_id;
-    groupHeader['Current-User-Id'] = authData.id;
-    groupHeader['Current-Group'] = 'investor';
-  
-    fetch(`http://transaction-api.vivriti.in:3000/transactions/investor_dashboard_stats`, {headers: groupHeader})
+    fetch(`http://transaction-api.vivriti.in:3000/transactions/investor_dashboard_stats`, {headers: JSON.parse(localStorage.getItem('header', ''))})
     .then((response) => {
       return response.json();
     })
@@ -45,7 +35,7 @@ const HomeScreen = (props)=> {
       console.error(error);
     });
     
-  }, [authData])
+  }, [])
 
   const [data, setData] = useState({});
 
@@ -105,8 +95,12 @@ HomeScreen.navigationOptions = ({ navigation }) => {return {
     fontWeight:500,
   },
   headerRight: () => (
-    <TouchableOpacity style={styles.logoutButton} onPress={async () => {await AsyncStorage.clear();
-      navigation.navigate('Auth');}}>
+    <TouchableOpacity style={styles.logoutButton} onPress={async () => {
+      const auth = await AsyncStorage.clear();
+      console.log(auth);
+      
+      navigation.navigate('Auth');
+      }}>
       <Text style={{color:'#fff',fontWeight:'500'}}>Logout</Text>
     </TouchableOpacity>
   ),
