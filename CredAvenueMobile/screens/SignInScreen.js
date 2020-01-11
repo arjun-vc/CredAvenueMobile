@@ -4,7 +4,7 @@ import {
   View,
   AsyncStorage,
   StyleSheet,
-  TextInput
+  TextInput,Text,Image,
 } from 'react-native';
 export default class SignInScreen extends React.Component {
   constructor(props) {
@@ -12,26 +12,48 @@ export default class SignInScreen extends React.Component {
     this.state = {userName: '', password: ''};
   }
     static navigationOptions = {
-      title: 'Please sign in',
+      headerBackground: (
+        <Image
+          style={{
+            width: '45%',
+            height: 80,
+            resizeMode: 'contain',
+            marginTop: 3,
+            marginLeft: 10,
+            marginTop: -10,
+          }}
+          source={require('../assets/images/cred-logo-darkbg.png')}
+        />
+      ),
+      headerStyle: {
+        // backgroundColor: '#7ae88c'
+        backgroundImage: 'linear-gradient(to right, #80ec88 , #5fd4a3)'
+      },
+      headerTitleStyle: {
+        color: '#fff',
+        fontWeight:500,
+      },
     };
   
     render() {
       return (
         <View style={styles.container}>
+          <Text style={{fontSize: 20,fontWeight: 600,color:'#fff',marginBottom:15}}>Welcome to CredAvenue</Text>
+          <Text style={{fontSize: 15,fontWeight: 500,color:'#fff',marginBottom:15}}>Please Sign in to continue</Text>
           <TextInput
-          style={{height: 40}}
+          style={{height: 40,backgroundColor:'#fff',padding:10,marginBottom:15,width:250}}
           placeholder="Username"
           onChangeText={(userName) => this.setState({userName})}
           value={this.state.text}
         />
         <TextInput
-          style={{height: 40}}
+          style={{height: 40,backgroundColor:'#fff',padding:10,marginBottom:15,width:250}}
           placeholder="Password"
           onChangeText={(password) => this.setState({password})}
           value={this.state.text}
         />
         
-          <Button title="Sign in!" onPress={this._signInAsync} />
+          <Button title="Sign in!" onPress={this._signInAsync} color="rgb(59, 63, 220)"/>
         </View>
       );
     }
@@ -47,6 +69,15 @@ export default class SignInScreen extends React.Component {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor:'#5478de',
+      minHeight: 'calc(100vh - 64px)'
+    },
+    welcomeImage: {
+      width: 100,
+      height: 80,
+      resizeMode: 'contain',
+      marginTop: 3,
+      marginLeft: -10,
     },
   });
   
