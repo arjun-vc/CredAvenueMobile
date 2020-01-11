@@ -6,6 +6,8 @@ import {
   StyleSheet,
   TextInput,Text,Image,
 } from 'react-native';
+import humps from 'humps';
+import _get from 'lodash/get';
 export default class SignInScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -58,9 +60,17 @@ export default class SignInScreen extends React.Component {
       );
     }
   
-    _signInAsync = async () => {
-      await AsyncStorage.setItem('userToken', 'abc');
-      this.props.navigation.navigate('Main');
+    _signInAsync = () => {
+      fetch(`http://transaction-api.vivriti.in:3000/users/authenticate?email=${this.state.userName}`).then((response) => {
+        return response.json();
+      })
+      .then((myJson) => {
+        AsyncStorage.setItem('userToken', JSON.stringify(myJson), () => {this.props.navigation.navigate('Main')});
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      
     };
   }
 

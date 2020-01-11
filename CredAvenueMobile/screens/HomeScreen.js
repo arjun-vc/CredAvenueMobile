@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,44 +6,71 @@ import {
   AsyncStorage,
   Text,TouchableOpacity,Image,
 } from 'react-native';
-import { COLOR, ThemeContext, getTheme, ListItem, Avatar } from 'react-native-material-ui';
+import humps from 'humps';
+import _get from 'lodash/get';
+import _has from 'lodash/has'
 
-const uiTheme = {
-  palette: {
-    primaryColor: COLOR.green500,
-  },
-  toolbar: {
-    container: {
-      height: 50,
-    },
-  },
+
+export const humanizeNumber = (value) => {
+  let val = Math.abs(value);
+  if (val >= 10000000) {
+      val = `${(val / 10000000).toFixed(2)} ${(val / 10000000).toFixed(2) > 1 ? ' Crs' : ' Cr'}`;
+  } else if (val >= 100000) {
+      val = `${(val / 100000).toFixed(2)} ${(val / 100000).toFixed(2) > 1 ? 'Lakhs' : 'Lakh'}`;
+  }
+  return val;
 };
 
 const HomeScreen = (props)=> {
+  const [authData, setAuthData] = useState({});
+  useEffect(async () => {
+    const data = await AsyncStorage.getItem('userToken');
+    setAuthData(JSON.parse(data));
+  }, []);
+
   useEffect(() => {
-    fetch(`http://transaction-api.vivriti.in:3000/transactions/investor_dashboard_stats`)
+    const groupHeader = {};
+    groupHeader['Current-Entity-Id'] = authData.entity_id;
+    groupHeader['Current-User-Id'] = authData.id;
+    groupHeader['Current-Group'] = 'investor';
+  
+    fetch(`http://transaction-api.vivriti.in:3000/transactions/investor_dashboard_stats`, {headers: groupHeader})
     .then((response) => {
       return response.json();
     })
     .then((myJson) => {
-      console.log(myJson);
+      setData(_get(humps.camelizeKeys(myJson), 'investorDashboardStats.summary', {}))
+    })
+    .catch((error) => {
+      console.error(error);
     });
     
-  }, []);
-  
+  }, [authData])
+
+  const [data, setData] = useState({});
 
     return (
-      // <ThemeContext.Provider value={getTheme(uiTheme)}>
-      //   <View style={styles.container}>
-      //   <ListItem
-      //   divider
-      //   centerElement={<Avatar icon="person" iconColor="blue" />}
-      //   onPress={() => {}}
-      // />
-      // </View>
-      // </ThemeContext.Provider>\
-      <View style={styles.container}>
-        <Text style={{fontSize:'16px',marginLeft:'10px',marginTop:'10px',fontWeight:'600',color:'#fff',textDecorationLine:'underline'}}>DashBoard</Text>
+        <View style={styles.container}>
+          <div>
+            <View style={styles.invHead}>
+            <h3>My summary</h3>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={[{flex: 1,height: 100, backgroundColor: 'powderblue', }, styles.li]} ><Text>{humanizeNumber(data.amountInvested)}</Text>
+                            <Text>My Investment</Text></View>
+        <View style={[{flex: 1,height: 100, backgroundColor: 'skyblue'}, styles.li]} ><Text>{data.myDeals}</Text>
+                            <Text>My Deals</Text></View>
+      </View>
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={[{flex: 1,height: 100, backgroundColor: 'skyblue', }, styles.li]} ><Text>{humanizeNumber(data.amountOs)}</Text>
+                            <Text>My Outstanding</Text></View>
+        <View style={[{flex: 1,height: 100, backgroundColor: 'powderblue'}, styles.li]} ><Text>
+                                {parseFloat(data.blendedYield).toFixed(2)} <span>%</span>
+                            </Text>
+                            <Text>Blended Yield</Text></View>
+      </View>
+
+                        </div>
       </View>
     );
 
