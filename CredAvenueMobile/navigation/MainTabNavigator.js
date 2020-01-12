@@ -8,6 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import TransactionDetailsScreen from "../screens/TransDetailsScreen";
 import SettingsScreen from '../screens/SettingsScreen';
+import TransactionDetailsScreen from "../screens/TransactionDetailsScreen";
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
