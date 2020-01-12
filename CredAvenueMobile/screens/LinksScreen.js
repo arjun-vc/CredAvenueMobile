@@ -9,7 +9,7 @@ const SecondRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
 );
 
-export default function LinksScreen() {
+export default function LinksScreen(props) {
   const [index, setindex] = useState(0);
 
   const [authData, setAuthData] = useState({});
@@ -23,18 +23,12 @@ export default function LinksScreen() {
 
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  useEffect(async () => {
-    const data = await AsyncStorage.getItem('userToken');
-    setAuthData(JSON.parse(data));
-  }, []);
-
   useEffect(() => {
-    const groupHeader = {};
-    groupHeader['Current-Entity-Id'] = authData.entity_id;
-    groupHeader['Current-User-Id'] = authData.id;
-    groupHeader['Current-Group'] = 'investor';
-  
-    fetch(`http://transaction-api.vivriti.in:3000/transactions?page=1&items_per_page=50&actor=investor&tab=${routes[index].key}&`, {headers: groupHeader})
+    fetchData();
+  }, [index]);
+
+  const fetchData = () => {
+    fetch(`http://transaction-api.vivriti.in:3000/transactions?page=1&items_per_page=50&actor=investor&tab=${routes[index].key}&`, {headers: JSON.parse(localStorage.getItem('header', ''))})
     .then((response) => {
       return response.json();
     })
@@ -44,10 +38,9 @@ export default function LinksScreen() {
     .catch((error) => {
       console.error(error);
     });
-    
-  }, [authData, index]);
+  }
 const FirstRoute = () => (
-  <LiveScreen transList={transList}/>
+  <LiveScreen transList={transList} {...props}/>
 );
   return (
     <TabView 

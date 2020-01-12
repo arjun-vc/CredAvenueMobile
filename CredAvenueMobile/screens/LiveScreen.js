@@ -15,7 +15,7 @@ class TransScreen extends React.Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate("TransactionDetails", item);
+          this.props.navigation.navigate("TransactionDetails", {item: JSON.stringify(item)});
         }}
       >
         <View
