@@ -49,11 +49,12 @@ export default class SignInScreen extends React.Component {
             value={this.state.text}
           />
           <TextInput
-            style={{height: 40,backgroundColor:'#fff',padding:10,marginBottom:15,width:250}}
-            placeholder="Password"
-            onChangeText={(password) => this.setState({password})}
-            value={this.state.text}
-          />
+          style={{height: 40,backgroundColor:'#fff',padding:10,marginBottom:15,width:250}}
+          placeholder="Password"
+          onChangeText={(password) => this.setState({password})}
+          value={this.state.text}
+          secureTextEntry
+        />
           
             <Button title="Sign in!" onPress={this._signInAsync} color="rgb(59, 63, 220)"/>
             {/* <View style={{background:'#fff',position:'fixed',bottom:'0px',borderTopLeftRadius: '10px',borderTopRightRadius: '10px',borderBottomLeftRadius: '0px',borderBottomRightRadius: '0px', marginBottom:'0px',marginLeft:'0px',marginRight:'0px',minWidth:'100%',padding:'10px',margin:'40px'}}>
@@ -96,7 +97,13 @@ export default class SignInScreen extends React.Component {
         return response.json();
       })
       .then((myJson) => {
-        AsyncStorage.setItem('userToken', JSON.stringify(myJson), () => {this.props.navigation.navigate('Main')});
+        AsyncStorage.setItem('userToken', JSON.stringify(myJson), () => {
+          const groupHeader = {};
+          groupHeader["Current-Entity-Id"] = myJson.entity_id;
+          groupHeader["Current-User-Id"] = myJson.id;
+          groupHeader["Current-Group"] = "investor";
+          localStorage.setItem("header", JSON.stringify(groupHeader));
+          this.props.navigation.navigate('Main')});
       })
       .catch((error) => {
         console.error(error);
