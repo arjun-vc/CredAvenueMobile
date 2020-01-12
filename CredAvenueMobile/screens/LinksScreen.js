@@ -77,7 +77,7 @@ LinksScreen.navigationOptions = {
   },
   headerTitleStyle: {
     color: '#fff',
-    fontWeight:500,
+    fontWeight:'500',
   },
 };
 

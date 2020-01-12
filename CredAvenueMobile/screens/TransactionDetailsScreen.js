@@ -159,7 +159,7 @@ TransactionDetailsScreen.navigationOptions = {
   },
   headerTitleStyle: {
     color: '#fff',
-    fontWeight:500,
+    fontWeight:'500',
   },headerTintColor: '#00c7cc',
 };
 
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   expressInterestButton: {
-    backgroundImage: 'linear-gradient(to right, #63e277 , #50d79c);',
+    // backgroundImage: 'linear-gradient(to right, #63e277 , #50d79c);',
     color:'#fff',
     paddingTop:5, 
     paddingRight:12,
