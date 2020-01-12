@@ -1,16 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { ScrollView, StyleSheet, Text, FlatList, View, Dimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native';
 import _get from 'lodash/get';
 import humps from 'humps'
 import COLORS from '../constants/ChartColors'
 import {
-    LineChart,
     BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-  } from "react-native-chart-kit";
+    PieChart  } from "react-native-chart-kit";
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 const TransScreen = (props) => {
     const [item, setitem] = useState({});
     const [details, setdetails] = useState({})
@@ -50,8 +47,10 @@ const TransScreen = (props) => {
     </View> */}
     <View>
         <Text>Pool Summary</Text>
-        <Text>Top State Concentration</Text>
-        {_get(details, 'poolSummary.consolidatedPoolInfo.state') && <PieChart
+        
+        {_get(details, 'poolSummary.consolidatedPoolInfo.state') && 
+        (<><Text>Top State Concentration</Text>
+        <PieChart
             data={_get(details, 'poolSummary.consolidatedPoolInfo.state', []).map((data, index) => ({...data, color: COLORS[COLORS.length - 1-index],
     legendFontColor: "#7F7F7F",
     legendFontSize: 15}))}
@@ -61,7 +60,7 @@ const TransScreen = (props) => {
             backgroundColor="transparent"
             paddingLeft="0"
             chartConfig={chartConfig}
-            />}
+        /></>)}
         <Text>Top District Concentration</Text>
         {_get(details, 'poolSummary.consolidatedPoolInfo.district') && <BarChart  data={{
   labels: _get(details, 'poolSummary.consolidatedPoolInfo.district', []).map((data) => data.name),
@@ -73,6 +72,20 @@ const TransScreen = (props) => {
 }} width={Dimensions.get('window').width} height={220} style={styles.graphStyle}
 yAxisLabel={'$'} chartConfig={chartConfig} verticalLabelRotation={30} />}
     </View>
+    <View style={{flex:1, backgroundColor: '#f3f3f3', }}>
+        {/* Rest of the app comes ABOVE the action button component !*/}
+        <ActionButton buttonColor="rgba(231,76,60,1)" >
+          <ActionButton.Item buttonColor='#9b59b6' title="Express Interest" onPress={() => console.log("notes tapped!")}>
+            <Icon name="md-done-all" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3498db' title="Make A Bid" onPress={() => {}}>
+            <Icon name="md-pricetags" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          {/* <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
+            <Icon name="md-done-all" style={styles.actionButtonIcon} />
+          </ActionButton.Item> */}
+        </ActionButton>
+      </View>   
     </ScrollView>
   );
 }
@@ -91,7 +104,12 @@ const styles = StyleSheet.create({
   },
   graphStyle: {
       backgroundColor: '#fff',
-  }
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
 });
 
 export default TransScreen;
