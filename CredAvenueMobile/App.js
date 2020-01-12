@@ -14,7 +14,7 @@ export default function App(props){
     const data = await AsyncStorage.getItem('userToken');
     const authData = data ? JSON.parse(data) : {};
     const groupHeader = {};
-    groupHeader['Current-Entity-Id'] = authData.enity_id;
+    groupHeader['Current-Entity-Id'] = authData.entity_id;
     groupHeader['Current-User-Id'] = authData.id;
     groupHeader['Current-Group'] = 'investor';
     

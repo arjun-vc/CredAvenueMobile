@@ -52,6 +52,7 @@ export default class SignInScreen extends React.Component {
           placeholder="Password"
           onChangeText={(password) => this.setState({password})}
           value={this.state.text}
+          secureTextEntry
         />
         
           <Button title="Sign in!" onPress={this._signInAsync} color="rgb(59, 63, 220)"/>
@@ -64,7 +65,13 @@ export default class SignInScreen extends React.Component {
         return response.json();
       })
       .then((myJson) => {
-        AsyncStorage.setItem('userToken', JSON.stringify(myJson), () => {this.props.navigation.navigate('Main')});
+        AsyncStorage.setItem('userToken', JSON.stringify(myJson), () => {
+          const groupHeader = {};
+          groupHeader["Current-Entity-Id"] = myJson.entity_id;
+          groupHeader["Current-User-Id"] = myJson.id;
+          groupHeader["Current-Group"] = "investor";
+          localStorage.setItem("header", JSON.stringify(groupHeader));
+          this.props.navigation.navigate('Main')});
       })
       .catch((error) => {
         console.error(error);
